@@ -68,12 +68,15 @@
       font-size: 12px;
       margin-right: 5px;
     }
-    .math { background-color: #FF6B6B; }
-    .english { background-color: #4ECDC4; }
-    .chinese { background-color: #45B7D1; }
+    .chinese { background-color: #FF6B6B; }
+    .math { background-color: #4ECDC4; }
+    .english { background-color: #45B7D1; }
     .physics { background-color: #96CEB4; }
     .chemistry { background-color: #FFEAA7; }
     .biology { background-color: #DDA0DD; }
+    .history { background-color: #FF9F68; }
+    .geography { background-color: #5D8AA8; }
+    .politics { background-color: #E75480; }
     .other { background-color: #95A5A6; }
     .delete-btn {
       background: #ff6b6b;
@@ -194,6 +197,9 @@
           'physics': '物理',
           'chemistry': '化学',
           'biology': '生物',
+          'history': '历史',
+          'geography': '地理',
+          'politics': '道德与法治',
           'other': '其他'
         };
         return subjects[subjectValue] || subjectValue;
