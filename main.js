@@ -108,6 +108,7 @@ const createWindow = () => {
 
   return mainWindow
 }
+
 // 优化后的通用设置处理函数
 const createSettingHandler = (settingName, toggleEvent) => ({
   load: () => {
@@ -136,7 +137,7 @@ const createSettingHandler = (settingName, toggleEvent) => ({
   
   handleToggle: (isEnabled, mainWindow) => {
     // 保存设置到配置文件
-    createSettingHandler(settingName).save(isEnabled);
+    createSettingHandler(settingName, toggleEvent).save(isEnabled);
     
     // 根据开关状态控制显示/隐藏
     if (mainWindow) {
@@ -150,6 +151,7 @@ const homeworkSettingHandler = createSettingHandler('homeworkEnabled', 'homework
 
 let isClockEnabled = clockSettingHandler.load();
 let isHomeworkEnabled = homeworkSettingHandler.load();
+
 const handleClockToggle = (isEnabled) => {
   isClockEnabled = isEnabled;
   clockSettingHandler.handleToggle(isEnabled, mainWindow);
@@ -167,7 +169,6 @@ const createHomeworkWindow = () => {
     homeworkWindow.focus();
     return;
   }
-
 
   homeworkWindow = new BrowserWindow({
     icon: './assets/logo.png',
@@ -197,8 +198,8 @@ const icon = nativeImage.createFromPath('./assets/logo.png')
 
 // 应用准备就绪时
 app.whenReady().then(() => {
-  isClockEnabled = loadClockSetting();
-  isHomeworkEnabled = loadHomeworkSetting();
+  isClockEnabled = clockSettingHandler.load();
+  isHomeworkEnabled = homeworkSettingHandler.load();
 
   createWindow();
 
