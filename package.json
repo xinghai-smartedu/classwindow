@@ -6,7 +6,7 @@
   "main": "main.js",
   "repository": "git@github.com:xinghai-smartedu/classwindow.git",
   "author": "Yeying-Xingchen <yeyingxingchen@yeah.net>",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
