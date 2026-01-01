@@ -1,0 +1,26 @@
+name: Build
+on:
+ push:
+   tags:
+     - 'v*'
+jobs:
+ build:
+   runs-on: ${{ matrix.os }}
+   strategy:
+     matrix:
+       os: [macos-latest, ubuntu-latest, windows-latest]
+   steps:
+     - name: Checkout Code
+       uses: actions/checkout@v2
+     - name: Setup Node.js
+       uses: actions/setup-node@v6.1.0
+       with:
+         node-version: 24
+     - name: Install Dependencies
+       run: yarn
+     - name: Import with electron-forge
+       run: |
+         npm install --save-dev @electron-forge/cli
+         yarn dlx electron-forge import
+     - name: Build with electron-forge
+       run: "yarn make"
