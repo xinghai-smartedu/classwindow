@@ -1,5 +1,7 @@
 {
   "name": "classwindow",
+  "productName": "班级窗",
+  "description": "一个用于显示信息的悬浮窗应用。",
   "version": "1.0.0",
   "main": "main.js",
   "repository": "git@github.com:xinghai-smartedu/classwindow.git",
