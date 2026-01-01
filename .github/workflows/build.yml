@@ -15,13 +15,13 @@ jobs:
        with:
          node-version: 24
      - name: Install Dependencies
-       run: yarn
+       run: npm install
      - name: Import with electron-forge
        run: |
          npm install --save-dev @electron-forge/cli
-         yarn dlx electron-forge import
+         npx electron-forge import
      - name: Build with electron-forge
-       run: "yarn make"
+       run: "npm run make"
      - name: Upload a Build Artifact
        uses: actions/upload-artifact@v6.0.0
        with:
