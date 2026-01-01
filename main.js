@@ -108,113 +108,56 @@ const createWindow = () => {
 
   return mainWindow
 }
+// 优化后的通用设置处理函数
+const createSettingHandler = (settingName, toggleEvent) => ({
+  load: () => {
+    try {
+      if (fs.existsSync(CONFIG_PATH)) {
+        const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
+        return config[settingName] !== undefined ? config[settingName] : true;
+      }
+    } catch (err) {
+      console.warn(`读取${settingName}设置失败:`, err);
+    }
+    return true;
+  },
+  
+  save: (isEnabled) => {
+    try {
+      ensureConfigDir();
+      const config = loadConfig();
+      config[settingName] = isEnabled;
+      config.timestamp = Date.now();
+      fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
+    } catch (err) {
+      console.error(`保存${settingName}设置失败:`, err);
+    }
+  },
+  
+  handleToggle: (isEnabled, mainWindow) => {
+    // 保存设置到配置文件
+    createSettingHandler(settingName).save(isEnabled);
+    
+    // 根据开关状态控制显示/隐藏
+    if (mainWindow) {
+      mainWindow.webContents.send(toggleEvent, isEnabled);
+    }
+  }
+});
 
-// 保存时钟状态的变量
-let isClockEnabled = true;
+const clockSettingHandler = createSettingHandler('clockEnabled', 'clock-toggle');
+const homeworkSettingHandler = createSettingHandler('homeworkEnabled', 'homework-toggle');
 
-// 处理时钟开关的函数
+let isClockEnabled = clockSettingHandler.load();
+let isHomeworkEnabled = homeworkSettingHandler.load();
 const handleClockToggle = (isEnabled) => {
   isClockEnabled = isEnabled;
-  
-  // 保存设置到配置文件
-  saveClockSetting(isEnabled);
-  
-  // 根据开关状态控制时钟显示/隐藏
-  if (mainWindow) {
-    mainWindow.webContents.send('clock-toggle', isEnabled);
-  }
+  clockSettingHandler.handleToggle(isEnabled, mainWindow);
 };
 
-// 保存时钟设置
-const saveClockSetting = (isEnabled) => {
-  try {
-    // 确保 data 目录存在
-    const dir = path.dirname(CONFIG_PATH);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-    
-    // 读取现有配置
-    let config = {};
-    if (fs.existsSync(CONFIG_PATH)) {
-      config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
-    }
-    
-    // 更新时钟设置
-    config.clockEnabled = isEnabled;
-    config.timestamp = Date.now();
-    
-    fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
-  } catch (err) {
-    console.error('保存时钟设置失败:', err);
-  }
-};
-
-// 读取时钟设置
-const loadClockSetting = () => {
-  try {
-    if (fs.existsSync(CONFIG_PATH)) {
-      const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
-      return config.clockEnabled !== undefined ? config.clockEnabled : true;
-    }
-  } catch (err) {
-    console.warn('读取时钟设置失败:', err);
-  }
-  return true; // 默认启用
-};
-
-// 保存作业状态的变量
-let isHomeworkEnabled = true;
-
-// 处理作业开关的函数
 const handleHomeworkToggle = (isEnabled) => {
   isHomeworkEnabled = isEnabled;
-  
-  // 保存设置到配置文件
-  saveHomeworkSetting(isEnabled);
-  
-  // 根据开关状态控制作业显示/隐藏
-  if (mainWindow) {
-    mainWindow.webContents.send('homework-toggle', isEnabled);
-  }
-};
-
-// 保存作业设置
-const saveHomeworkSetting = (isEnabled) => {
-  try {
-    // 确保 data 目录存在
-    const dir = path.dirname(CONFIG_PATH);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-    
-    // 读取现有配置
-    let config = {};
-    if (fs.existsSync(CONFIG_PATH)) {
-      config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
-    }
-    
-    // 更新作业设置
-    config.homeworkEnabled = isEnabled;
-    config.timestamp = Date.now();
-    
-    fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
-  } catch (err) {
-    console.error('保存作业设置失败:', err);
-  }
-};
-
-// 读取作业设置
-const loadHomeworkSetting = () => {
-  try {
-    if (fs.existsSync(CONFIG_PATH)) {
-      const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
-      return config.homeworkEnabled !== undefined ? config.homeworkEnabled : true;
-    }
-  } catch (err) {
-    console.warn('读取作业设置失败:', err);
-  }
-  return true; // 默认启用
+  homeworkSettingHandler.handleToggle(isEnabled, mainWindow);
 };
 
 // 创建作业输入窗口
@@ -250,7 +193,6 @@ const createHomeworkWindow = () => {
 // 为 Tray 对象保存一个全局引用以避免被垃圾回收
 let tray
 
-// 16x16 红色圆形 data URL
 const icon = nativeImage.createFromPath('./assets/logo.png')
 
 // 应用准备就绪时
@@ -333,5 +275,4 @@ app.whenReady().then(() => {
   })
 })
 
-app.on('window-all-closed', () => {
-});
+app.on('window-all-closed', () => {});
