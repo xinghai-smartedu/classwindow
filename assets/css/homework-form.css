@@ -1,0 +1,118 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    color: black;
+    font-family: Arial, sans-serif;
+    border-radius: 10px;
+    user-select: none;
+    overflow: hidden;
+    text-align: center;
+}
+
+/* 标题栏样式 */
+.title-bar {
+    height: 32px;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    box-sizing: border-box;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    cursor: default;
+    user-select: none;
+}
+
+.title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.title-bar-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.title-bar-button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.close-button {
+    background-color: #ff5f57;
+}
+
+.minimize-button {
+    background-color: #febc2e;
+}
+
+.maximize-button {
+    background-color: #28c840;
+}
+
+.container {
+    max-width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+    color: black;
+    font-weight: bold;
+}
+
+.input-group {
+    margin: 12px 0;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    color: black;
+}
+
+fluent-select {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+fluent-text-area,
+fluent-text-field {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.button-group {
+    text-align: center;
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+fluent-button {
+    flex: 1;
+}
+
+/* 隐藏滚动条但保持滚动功能 */
+/* 隐藏 Webkit 浏览器的滚动条 */
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* 针对 IE/Edge 的滚动条样式 */
+body {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}

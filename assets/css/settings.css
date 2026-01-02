@@ -1,0 +1,190 @@
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #edebe9;
+}
+
+.header h1 {
+    color: #323130;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.setting-group {
+    margin-bottom: 20px;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #edebe9;
+}
+
+.setting-item:last-child {
+    border-bottom: none;
+}
+
+.setting-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.setting-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #323130;
+    margin-bottom: 4px;
+}
+
+.setting-description {
+    font-size: 14px;
+    color: #605e5c;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    margin-left: 16px;
+}
+
+.footer {
+    margin-top: 24px;
+    text-align: right;
+}
+
+fluent-button {
+    margin-left: 8px;
+}
+
+/* 启动台设置样式 */
+.launchpad-section {
+    margin-top: 20px;
+    padding: 16px;
+    background-color: #faf9f8;
+    border-radius: 8px;
+}
+
+.launchpad-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.launchpad-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #323130;
+}
+
+.launchpad-list {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 16px;
+}
+
+.launchpad-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: white;
+    border: 1px solid #edebe9;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.launchpad-item-info {
+    flex: 1;
+}
+
+.launchpad-item-name {
+    font-weight: 600;
+    color: #323130;
+}
+
+.launchpad-item-path {
+    font-size: 12px;
+    color: #605e5c;
+    word-break: break-all;
+}
+
+.launchpad-item-type {
+    font-size: 12px;
+    color: #0078d4;
+    background: #e6f4ff;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 8px;
+}
+
+.launchpad-item-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.remove-btn {
+    background-color: #d13438;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.remove-btn:hover {
+    background-color: #a80000;
+}
+
+.add-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.form-row {
+    display: flex;
+    gap: 8px;
+}
+
+.add-input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #edebe9;
+    border-radius: 4px;
+}
+
+.type-selector {
+    width: 100px;
+    padding: 8px;
+    border: 1px solid #edebe9;
+    border-radius: 4px;
+}
+
+/* 隐藏滚动条但保持滚动功能 */
+/* 隐藏 Webkit 浏览器的滚动条 */
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* 针对 IE/Edge 的滚动条样式 */
+body {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
