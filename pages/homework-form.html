@@ -7,7 +7,7 @@
     <style>
         body {
             margin: 0;
-            padding: 15px;
+            padding: 0;
             background: transparent;
             color: black;
             font-family: Arial, sans-serif;
@@ -17,8 +17,56 @@
             text-align: center;
         }
 
+        /* 标题栏样式 */
+        .title-bar {
+            height: 32px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            box-sizing: border-box;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            cursor: default;
+            user-select: none;
+        }
+
+        .title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .title-bar-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .title-bar-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+
+        .close-button {
+            background-color: #ff5f57;
+        }
+
+        .minimize-button {
+            background-color: #febc2e;
+        }
+
+        .maximize-button {
+            background-color: #28c840;
+        }
+
         .container {
             max-width: 100%;
+            padding: 15px;
+            box-sizing: border-box;
         }
 
         h2 {
@@ -79,6 +127,14 @@
 </head>
 
 <body>
+    <!-- 标题栏 -->
+    <div class="title-bar">
+        <div class="title">添加作业</div>
+        <div class="title-bar-buttons">
+            <div class="title-bar-button close-button" title="关闭" id="titleCloseBtn"></div>
+        </div>
+    </div>
+
     <div class="container">
         <h2>添加作业</h2>
         <div class="input-group">
@@ -142,6 +198,17 @@
 
         document.getElementById('cancelBtn').addEventListener('click', () => {
             window.close();
+        });
+
+        // 标题栏按钮事件
+        document.getElementById('titleCloseBtn').addEventListener('click', () => {
+            window.close();
+        });
+
+        document.getElementById('minimizeBtn').addEventListener('click', () => {
+            const { BrowserWindow } = require('electron').remote;
+            const currentWindow = BrowserWindow.getFocusedWindow();
+            currentWindow.minimize();
         });
 
         // 关闭窗口时清理引用
