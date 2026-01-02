@@ -22,7 +22,8 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "icon": "./assets/logo"
+        "icon": "./assets/logo",
+        "executableName": "classwindow"
       },
       "makers": [
         {
