@@ -70,6 +70,7 @@ let settingsWindow;
 
 // 欢迎/启动页面窗口（首次使用显示）
 let welcomeWindow;
+
 // 功能展示窗口
 let featuresWindow;
 

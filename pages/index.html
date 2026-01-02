@@ -60,11 +60,10 @@
         }
 
         h3 {
-            margin: 5px 0;
+            margin: 0;
         }
 
         .homework-list {
-            margin-top: 10px;
             overflow-y: auto;
         }
 
@@ -99,53 +98,63 @@
         }
 
         .chinese {
-            background-color: #FF6B6B;
+            background-color: #FF6B6Baa;
         }
 
         .math {
-            background-color: #4ECDC4;
+            background-color: #4ECDC4aa;
         }
 
         .english {
-            background-color: #45B7D1;
+            background-color: #45B7D1aa;
         }
 
         .physics {
-            background-color: #96CEB4;
+            background-color: #96CEB4aa;
         }
 
         .chemistry {
-            background-color: #FFEAA7;
+            background-color: #FFEAA7aa;
         }
 
         .biology {
-            background-color: #DDA0DD;
+            background-color: #DDA0DDaa;
         }
 
         .history {
-            background-color: #FF9F68;
+            background-color: #FF9F68aa;
         }
 
         .geography {
-            background-color: #5D8AA8;
+            background-color: #5D8AA8aa;
         }
 
         .politics {
-            background-color: #E75480;
+            background-color: #E75480aa;
         }
 
         .other {
-            background-color: #95A5A6;
+            background-color: #95A5A6aa;
         }
 
         .delete-btn {
-            background: #ff6b6b;
-            color: white;
+            background: none;
+            color: red;
             border: none;
-            padding: 3px 6px;
+            padding: 2px 6px;
             border-radius: 3px;
             cursor: pointer;
             font-size: 12px;
+        }
+
+        .add-homework-btn{
+            margin-top: 4px;
+        }
+
+        .add-homework-btn::part(control) {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 2px 16px;
         }
 
         /* 加载动画样式 */
@@ -198,6 +207,10 @@
             /* 与其他卡片保持一致 */
             border-radius: 8px;
             /* 与其他卡片保持一致 */
+        }
+
+        .launchpad-container {
+            margin: 8px 0;
         }
 
         .launchpad-app {
@@ -262,7 +275,7 @@
             <div class="homework-list" id="homeworkList">
                 <!-- 作业将在这里显示 -->
             </div>
-            <fluent-button appearance="accent" class="add-homework-btn" id="addHomeworkBtn">添加作业</fluent-button>
+            <fluent-button class="add-homework-btn" id="addHomeworkBtn">添加作业</fluent-button>
         </div>
 
         <!-- 启动台卡片 -->
@@ -449,9 +462,9 @@
                     // 检查是否是当天
                     const today = new Date();
                     if (!(date.getFullYear() === today.getFullYear() &&
-                            date.getMonth() === today.getMonth() &&
-                            date.getDate() === today.getDate())) {
-                        dueDateStr = `<br> 截止: ${date.getFullYear()}-${String(date.getMonth()+1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+                        date.getMonth() === today.getMonth() &&
+                        date.getDate() === today.getDate())) {
+                        dueDateStr = `<br> 截止: ${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
                     }
                 }
 
@@ -470,7 +483,7 @@
 
             // 添加删除按钮事件监听
             document.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     const index = parseInt(this.getAttribute('data-index'));
                     homeworkData.splice(index, 1);
                     localStorage.setItem('homeworkData', JSON.stringify(homeworkData));
