@@ -68,6 +68,11 @@ let homeworkWindow;
 // 设置窗口
 let settingsWindow;
 
+// 欢迎/启动页面窗口（首次使用显示）
+let welcomeWindow;
+// 功能展示窗口
+let featuresWindow;
+
 const createWindow = () => {
   const [defaultX, defaultY] = loadWindowPosition()
   
@@ -98,6 +103,13 @@ const createWindow = () => {
 
   // 加载页面内容
   mainWindow.loadFile('pages/index.html')
+
+  // 当主窗口 DOM 就绪时发送初始状态（时钟/作业/启动台）
+  mainWindow.webContents.once('dom-ready', () => {
+    mainWindow.webContents.send('clock-toggle', isClockEnabled);
+    mainWindow.webContents.send('homework-toggle', isHomeworkEnabled);
+    mainWindow.webContents.send('launchpad-apps-updated', getLaunchpadApps());
+  });
 
   // 监听窗口移动事件，保存位置
   mainWindow.on('moved', () => {
@@ -303,6 +315,61 @@ const createSettingsWindow = () => {
   });
 };
 
+// 创建欢迎页面窗口（首次使用时显示）
+const createWelcomeWindow = () => {
+  if (welcomeWindow) {
+    welcomeWindow.focus();
+    return;
+  }
+
+  welcomeWindow = new BrowserWindow({
+    icon: './assets/logo.png',
+    backgroundColor: 'transparent',
+    frame: false,
+    width: 600,
+    height: 420,
+    resizable: false,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
+  });
+
+  welcomeWindow.loadFile('pages/welcome.html');
+  welcomeWindow.setMenu(null);
+
+  welcomeWindow.on('closed', () => {
+    welcomeWindow = null;
+  });
+};
+
+// 创建功能展示窗口（独立页面）
+const createFeaturesWindow = () => {
+  if (featuresWindow) {
+    featuresWindow.focus();
+    return;
+  }
+
+  featuresWindow = new BrowserWindow({
+    icon: './assets/logo.png',
+    frame: true,
+    width: 560,
+    height: 420,
+    resizable: false,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
+  });
+
+  featuresWindow.loadFile('pages/features.html');
+  featuresWindow.setMenu(null);
+
+  featuresWindow.on('closed', () => {
+    featuresWindow = null;
+  });
+};
+
 // 为 Tray 对象保存一个全局引用以避免被垃圾回收
 let tray
 
@@ -313,17 +380,32 @@ app.whenReady().then(() => {
   isClockEnabled = clockSettingHandler.load();
   isHomeworkEnabled = homeworkSettingHandler.load();
 
-  createWindow();
+  // 如果是首次运行，显示欢迎页；否则直接创建主窗口
+  const appConfig = loadConfig();
 
-  // 确保窗口完全加载后发送初始状态
-  mainWindow.webContents.once('dom-ready', () => {
-    // 发送时钟和作业的初始状态
-    mainWindow.webContents.send('clock-toggle', isClockEnabled);
-    mainWindow.webContents.send('homework-toggle', isHomeworkEnabled);
-    
-    // 发送启动台应用列表
-    mainWindow.webContents.send('launchpad-apps-updated', getLaunchpadApps());
+  // 接收欢迎页完成信号：保存首次运行标记并创建主窗口
+  ipcMain.on('first-run-complete', () => {
+    try {
+      const cfg = loadConfig();
+      cfg.firstRun = false;
+      saveConfig(cfg);
+    } catch (e) {
+      console.warn('设置首次运行标记失败:', e);
+    }
+
+    // 创建主窗口并关闭欢迎页
+    createWindow();
+    if (welcomeWindow) {
+      welcomeWindow.close();
+      welcomeWindow = null;
+    }
   });
+
+  if (appConfig.firstRun === undefined || appConfig.firstRun) {
+    createWelcomeWindow();
+  } else {
+    createWindow();
+  }
 
   tray = new Tray(icon)
 
@@ -349,6 +431,10 @@ app.whenReady().then(() => {
   ])
 
   tray.setContextMenu(contextMenu)
+
+  ipcMain.on('open-settings-window', () => {
+    createSettingsWindow();
+  });
 
   // 监听打开作业窗口的请求
   ipcMain.on('open-homework-window', () => {
@@ -404,6 +490,11 @@ app.whenReady().then(() => {
   // 监听启动应用请求
   ipcMain.on('launch-app', (event, app) => {
     launchAppOrLink(app);
+  });
+
+  // 监听打开功能展示窗口的请求（从欢迎页触发）
+  ipcMain.on('open-features-window', () => {
+    createFeaturesWindow();
   });
 
   app.on('activate', () => {

@@ -142,4 +142,6 @@ vite.config.ts.timestamp-*
 
 # installers
 Output/
-data/
+
+# data
+data/config.json
