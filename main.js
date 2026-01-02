@@ -373,7 +373,12 @@ const createFeaturesWindow = () => {
 // 为 Tray 对象保存一个全局引用以避免被垃圾回收
 let tray
 
-const icon = nativeImage.createFromPath('./assets/logo.png')
+if (app.isPackaged) {
+  iconPath = path.join(process.resourcesPath, "assets/logo.png");
+} else {
+  iconPath = path.join(__dirname, "assets/logo.png");
+}
+const icon = nativeImage.createFromPath(iconPath);
 
 // 应用准备就绪时
 app.whenReady().then(() => {
