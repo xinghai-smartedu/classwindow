@@ -104,15 +104,3 @@ fluent-text-field {
 fluent-button {
     flex: 1;
 }
-
-/* 隐藏滚动条但保持滚动功能 */
-/* 隐藏 Webkit 浏览器的滚动条 */
-::-webkit-scrollbar {
-    display: none;
-}
-
-/* 针对 IE/Edge 的滚动条样式 */
-body {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
