@@ -425,7 +425,7 @@ app.whenReady().then(() => {
     mainWindow.setIgnoreMouseEvents(false, { forward: false });
     setTimeout(() => {
       mainWindow.setIgnoreMouseEvents(true, { forward: true });
-    }, 500);
+    }, 2000);
   });
 
   tray = new Tray(icon)

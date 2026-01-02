@@ -49,14 +49,25 @@
         }
 
         .time {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: bold;
-            margin: 5px 0;
+            margin: 8px 0;
+            letter-spacing: 1px;
         }
 
         .date {
-            font-size: 14px;
-            opacity: 0.8;
+            font-size: 13px;
+            opacity: 0.85;
+            margin-top: 5px;
+        }
+
+        .time-card h3,
+        .homework-card h3,
+        .launchpad-card h3 {
+            margin: 0 0 12px 0; /* 统一标题下边距 */
+            font-size: 16px; /* 统一标题字体大小 */
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
         }
 
         h3 {
@@ -64,38 +75,41 @@
         }
 
         .homework-list {
-            margin-top: 10px;
+            margin-top: 8px;
+            max-height: 300px;
             overflow-y: auto;
         }
 
         .homework-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px;
-            margin: 5px 0;
-            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.12); /* 背景色透明度 */
+            padding: 12px; /* 统一内边距 */
+            margin: 8px 0; /* 统一外边距 */
+            border-radius: 6px; /* 统一圆角 */
             text-align: left;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
         }
 
-        .homework-item>div:first-child {
+        .homework-item:hover {
+            background: rgba(255, 255, 255, 0.18); /* 悬停效果 */
+        }
+
+        .homework-item > div:first-child {
             flex: 1;
-            /* 让内容区域占据剩余空间 */
             word-wrap: break-word;
-            /* 允许长内容换行 */
-            word-break: break-all;
-            /* 在任意字符间换行 */
-            margin-right: 10px;
-            /* 添加右边距，与删除按钮保持距离 */
+            word-break: break-word;
+            margin-right: 12px;
         }
 
         .subject-tag {
             display: inline-block;
-            padding: 2px 6px;
-            border-radius: 10px;
+            padding: 3px 8px; /* 标签内边距 */
+            border-radius: 12px; /* 圆角标签 */
             font-size: 12px;
-            margin-right: 5px;
+            font-weight: 500;
+            margin-right: 6px; /* 右边距 */
+            vertical-align: middle;
         }
 
         .chinese {
@@ -155,7 +169,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background: linear-gradient(135deg, rgba(30, 30, 40, 0.9), rgba(40, 40, 50, 0.9)); /* 渐变背景 */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -163,16 +177,17 @@
             z-index: 9999;
             color: white;
             font-size: 16px;
+            border-radius: 12px; /* 与主体保持一致 */
         }
 
         .loading-spinner {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid white;
+            border-top: 4px solid #0078d4; /* 使用主题色 */
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         @keyframes spin {
