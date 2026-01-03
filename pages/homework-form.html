@@ -19,6 +19,18 @@
 
     <div class="container">
         <h2>添加作业</h2>
+        
+        <!-- 模板选择部分 -->
+        <div class="input-group">
+            <label>使用模板:</label>
+            <div class="template-controls">
+                <fluent-select id="templateSelect">
+                    <option value="">选择模板...</option>
+                </fluent-select>
+                <fluent-button appearance="outline" id="saveTemplateBtn" title="保存当前内容为模板">保存模板</fluent-button>
+            </div>
+        </div>
+        
         <div class="input-group">
             <label>科目:</label>
             <fluent-select id="subjectSelect">
@@ -49,9 +61,7 @@
     </div>
 
     <script>
-        const {
-            ipcRenderer
-        } = require('electron');
+        const { ipcRenderer } = require('electron');
 
         // 设置截止日期为当天
         document.addEventListener('DOMContentLoaded', () => {
@@ -59,6 +69,7 @@
             document.getElementById('dueDate').value = today;
         });
 
+        // 保存作业
         document.getElementById('saveBtn').addEventListener('click', () => {
             const subject = document.getElementById('subjectSelect').value;
             const content = document.getElementById('homeworkContent').value.trim();
@@ -85,12 +96,6 @@
         // 标题栏按钮事件
         document.getElementById('titleCloseBtn').addEventListener('click', () => {
             window.close();
-        });
-
-        document.getElementById('minimizeBtn').addEventListener('click', () => {
-            const { BrowserWindow } = require('electron').remote;
-            const currentWindow = BrowserWindow.getFocusedWindow();
-            currentWindow.minimize();
         });
 
         // 关闭窗口时清理引用
