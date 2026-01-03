@@ -356,7 +356,6 @@ app.whenReady().then(() => {
   // 监听作业窗口关闭事件
   ipcMain.on('homework-window-closed', () => {
     homeworkWindow = null;
-    mainWindow.setIgnoreMouseEvents(true, { forward: true });
   });
   
   // 监听获取设置的请求
