@@ -81,14 +81,18 @@ let mainWindow;
 const createWindow = () => {
   const [defaultX, defaultY] = loadWindowPosition();
   
+  // 读取置顶设置
+  const config = loadConfig();
+  const isAlwaysOnTop = config.alwaysOnTop !== undefined ? config.alwaysOnTop : false;
+  
   mainWindow = new BrowserWindow({
     width: 300,
     x: defaultX,
     y: defaultY,
     // 设置为无边框窗口
     frame: false,
-    // 始终在最前（可被其他窗口覆盖）
-    alwaysOnTop: false,
+    // 根据配置设置是否置顶
+    alwaysOnTop: isAlwaysOnTop,
     // 设置窗口层级为桌面窗口
     type: 'desktop',
     // 背景透明
@@ -109,10 +113,11 @@ const createWindow = () => {
   // 加载页面内容
   mainWindow.loadFile('pages/index.html');
 
-  // 当主窗口 DOM 就绪时发送初始状态（时钟/作业/启动台）
+  // 当主窗口 DOM 就绪时发送初始状态（时钟/作业/启动台/置顶）
   mainWindow.webContents.once('dom-ready', () => {
     mainWindow.webContents.send('clock-toggle', isClockEnabled);
     mainWindow.webContents.send('homework-toggle', isHomeworkEnabled);
+    mainWindow.webContents.send('always-on-top-toggle', isAlwaysOnTop); // 发送置顶状态
     mainWindow.webContents.send('launchpad-apps-updated', getLaunchpadApps());
   });
 
@@ -295,8 +300,12 @@ const createSettingHandler = (settingName, toggleEvent) => ({
 const clockSettingHandler = createSettingHandler('clockEnabled', 'clock-toggle');
 const homeworkSettingHandler = createSettingHandler('homeworkEnabled', 'homework-toggle');
 
+// 添加置顶设置处理程序
+const alwaysOnTopSettingHandler = createSettingHandler('alwaysOnTop', 'always-on-top-toggle');
+
 let isClockEnabled = clockSettingHandler.load();
 let isHomeworkEnabled = homeworkSettingHandler.load();
+let isAlwaysOnTop = alwaysOnTopSettingHandler.load(); // 添加置顶状态变量
 
 const handleClockToggle = (isEnabled) => {
   isClockEnabled = isEnabled;
@@ -308,6 +317,16 @@ const handleHomeworkToggle = (isEnabled) => {
   homeworkSettingHandler.handleToggle(isEnabled, mainWindow);
 };
 
+// 添加置顶切换处理函数
+const handleAlwaysOnTopToggle = (isEnabled) => {
+  isAlwaysOnTop = isEnabled;
+  alwaysOnTopSettingHandler.handleToggle(isEnabled, mainWindow);
+  
+  // 立即应用置顶设置
+  if (mainWindow) {
+    mainWindow.setAlwaysOnTop(isEnabled);
+  }
+};
 
 // 为 Tray 对象保存一个全局引用以避免被垃圾回收
 let tray;
@@ -317,6 +336,7 @@ const icon = nativeImage.createFromPath(iconPath);
 app.whenReady().then(() => {
   isClockEnabled = clockSettingHandler.load();
   isHomeworkEnabled = homeworkSettingHandler.load();
+  isAlwaysOnTop = alwaysOnTopSettingHandler.load(); // 加载置顶设置
 
   // 如果是首次运行，显示欢迎页；否则直接创建主窗口
   const appConfig = loadConfig();
@@ -400,6 +420,7 @@ app.whenReady().then(() => {
       settingsWindow.webContents.send('settings-updated', {
         clockEnabled: isClockEnabled,
         homeworkEnabled: isHomeworkEnabled,
+        alwaysOnTop: isAlwaysOnTop, // 添加置顶状态
         launchpadApps: getLaunchpadApps()
       });
     }
@@ -413,6 +434,11 @@ app.whenReady().then(() => {
   // 监听作业开关变化
   ipcMain.on('toggle-homework', (event, isEnabled) => {
     handleHomeworkToggle(isEnabled);
+  });
+  
+  // 监听置顶开关变化
+  ipcMain.on('toggle-always-on-top', (event, isEnabled) => {
+    handleAlwaysOnTopToggle(isEnabled);
   });
   
   // 监听添加启动台应用
@@ -453,14 +479,14 @@ app.whenReady().then(() => {
     createFeaturesWindow();
   });
 
-ipcMain.on('open-homework-list-window', () => {
-  createHomeworkListWindow();
-});
+  ipcMain.on('open-homework-list-window', () => {
+    createHomeworkListWindow();
+  });
 
-// 监听作业列表窗口关闭事件
-ipcMain.on('homework-list-window-closed', () => {
-  homeworkListWindow = null;
-});
+  // 监听作业列表窗口关闭事件
+  ipcMain.on('homework-list-window-closed', () => {
+    homeworkListWindow = null;
+  });
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {

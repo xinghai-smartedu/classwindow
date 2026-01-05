@@ -39,6 +39,16 @@
                         <fluent-switch id="homeworkToggle" label="作业"></fluent-switch>
                     </div>
                 </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">窗口置顶</div>
+                        <div class="setting-description">主窗口始终保持在最前端</div>
+                    </div>
+                    <div class="actions">
+                        <fluent-switch id="alwaysOnTopToggle" label="置顶"></fluent-switch>
+                    </div>
+                </div>
             </div>
             
             <!-- 启动台设置部分 -->
@@ -81,6 +91,7 @@
         ipcRenderer.on('settings-updated', (event, settings) => {
             document.querySelector('#clockToggle').checked = settings.clockEnabled;
             document.querySelector('#homeworkToggle').checked = settings.homeworkEnabled;
+            document.querySelector('#alwaysOnTopToggle').checked = settings.alwaysOnTop; // 添加置顶状态
             
             // 渲染启动台应用列表
             renderLaunchpadList(settings.launchpadApps || []);
@@ -94,6 +105,11 @@
         // 监听作业开关变化
         document.querySelector('#homeworkToggle').addEventListener('change', function() {
             ipcRenderer.send('toggle-homework', this.checked);
+        });
+        
+        // 监听置顶开关变化
+        document.querySelector('#alwaysOnTopToggle').addEventListener('change', function() {
+            ipcRenderer.send('toggle-always-on-top', this.checked);
         });
         
         // 添加启动台应用
