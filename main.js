@@ -233,6 +233,27 @@ const createSettingsWindow = () => {
   });
 };
 
+let aboutWindow;
+
+const createAboutWindow = () => { 
+  if (aboutWindow) {
+    aboutWindow.focus();
+    return;
+  }
+
+  aboutWindow = new BrowserWindow({
+    icon: iconPath,
+    frame: false,
+    resizable: true,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
+  });
+
+  aboutWindow.loadFile('pages/about.html');
+
+};
 // 欢迎页面窗口
 let welcomeWindow;
 
@@ -399,6 +420,13 @@ app.whenReady().then(() => {
     {
       label: '重新加载页面',
       role: "forceReload"
+    },
+    {
+      label: '关于',
+      click: () => {
+        createAboutWindow();
+      }
+
     },
     {
       label: '退出',
