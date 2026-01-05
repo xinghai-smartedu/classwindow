@@ -49,6 +49,16 @@
                         <fluent-switch id="alwaysOnTopToggle" label="置顶"></fluent-switch>
                     </div>
                 </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">使用暗色主题</div>
+                        <div class="setting-description">启用深色模式，使用黑色背景</div>
+                    </div>
+                    <div class="actions">
+                        <fluent-switch id="darkThemeToggle" label="暗色主题"></fluent-switch>
+                    </div>
+                </div>
             </div>
             
             <!-- 启动台设置部分 -->
@@ -92,6 +102,7 @@
             document.querySelector('#clockToggle').checked = settings.clockEnabled;
             document.querySelector('#homeworkToggle').checked = settings.homeworkEnabled;
             document.querySelector('#alwaysOnTopToggle').checked = settings.alwaysOnTop; // 添加置顶状态
+            document.querySelector('#darkThemeToggle').checked = settings.darkThemeEnabled || false; // 添加暗色主题状态
             
             // 渲染启动台应用列表
             renderLaunchpadList(settings.launchpadApps || []);
@@ -110,6 +121,11 @@
         // 监听置顶开关变化
         document.querySelector('#alwaysOnTopToggle').addEventListener('change', function() {
             ipcRenderer.send('toggle-always-on-top', this.checked);
+        });
+        
+        // 监听暗色主题开关变化
+        document.querySelector('#darkThemeToggle').addEventListener('change', function() {
+            ipcRenderer.send('toggle-dark-theme', this.checked);
         });
         
         // 添加启动台应用

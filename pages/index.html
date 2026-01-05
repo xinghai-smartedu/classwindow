@@ -52,6 +52,10 @@
     let isHomeworkVisible = true;
     // 添加启动台显示状态变量
     let isLaunchpadVisible = true;
+    // 添加置顶状态变量
+    let isAlwaysOnTop = true;
+    // 添加暗色主题状态变量
+    let isDarkThemeEnabled = false;
     // 启动台应用列表
     let launchpadApps = [];
     // 在 DOMContentLoaded 事件中添加
@@ -139,6 +143,43 @@
             if (launchpadHeaders[2]) { // 启动台标题是第三个h3（因为现在启动台在最后）
                 launchpadHeaders[2].style.display = 'block';
             }
+        }
+    }
+
+    // 添加切换主题的函数
+    function toggleTheme(enabled) {
+        isDarkThemeEnabled = enabled;
+        
+        if (enabled) {
+            // 使用暗色主题CSS
+            const darkThemeLink = document.createElement('link');
+            darkThemeLink.rel = 'stylesheet';
+            darkThemeLink.href = '../assets/css/main-dark.css';
+            darkThemeLink.id = 'theme-stylesheet'; // 添加ID以便后续引用
+            
+            // 移除现有的主题链接
+            const existingTheme = document.querySelector('link[href*="main.css"]');
+            if (existingTheme && !existingTheme.href.includes('main-dark.css')) {
+                existingTheme.remove();
+            }
+            
+            // 添加暗色主题链接
+            document.head.appendChild(darkThemeLink);
+        } else {
+            // 使用默认主题CSS
+            const lightThemeLink = document.createElement('link');
+            lightThemeLink.rel = 'stylesheet';
+            lightThemeLink.href = '../assets/css/main.css';
+            lightThemeLink.id = 'theme-stylesheet'; // 添加ID以便后续引用
+            
+            // 移除现有的主题链接
+            const existingTheme = document.querySelector('link[href*="main-dark.css"]');
+            if (existingTheme) {
+                existingTheme.remove();
+            }
+            
+            // 添加浅色主题链接
+            document.head.appendChild(lightThemeLink);
         }
     }
 
@@ -350,6 +391,11 @@
                     launchpadApps = apps;
                     updateLaunchpadVisibility();
                     renderLaunchpadApps();
+                });
+
+                // 监听暗色主题切换事件
+                ipcRenderer.on('dark-theme-toggle', (event, isEnabled) => {
+                    toggleTheme(isEnabled);
                 });
 
             } catch (e) {
