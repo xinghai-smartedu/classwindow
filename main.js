@@ -84,6 +84,7 @@ const createWindow = () => {
   // 读取置顶设置
   const config = loadConfig();
   const isAlwaysOnTop = config.alwaysOnTop !== undefined ? config.alwaysOnTop : false;
+  const isDarkThemeEnabled = config.darkThemeEnabled !== undefined ? config.darkThemeEnabled : false; // 读取暗色主题设置
   
   mainWindow = new BrowserWindow({
     width: 300,
@@ -113,11 +114,12 @@ const createWindow = () => {
   // 加载页面内容
   mainWindow.loadFile('pages/index.html');
 
-  // 当主窗口 DOM 就绪时发送初始状态（时钟/作业/启动台/置顶）
+  // 当主窗口 DOM 就绪时发送初始状态（时钟/作业/启动台/置顶/暗色主题）
   mainWindow.webContents.once('dom-ready', () => {
     mainWindow.webContents.send('clock-toggle', isClockEnabled);
     mainWindow.webContents.send('homework-toggle', isHomeworkEnabled);
     mainWindow.webContents.send('always-on-top-toggle', isAlwaysOnTop); // 发送置顶状态
+    mainWindow.webContents.send('dark-theme-toggle', isDarkThemeEnabled); // 发送暗色主题状态
     mainWindow.webContents.send('launchpad-apps-updated', getLaunchpadApps());
   });
 
@@ -303,9 +305,13 @@ const homeworkSettingHandler = createSettingHandler('homeworkEnabled', 'homework
 // 添加置顶设置处理程序
 const alwaysOnTopSettingHandler = createSettingHandler('alwaysOnTop', 'always-on-top-toggle');
 
+// 添加暗色主题设置处理程序
+const darkThemeSettingHandler = createSettingHandler('darkThemeEnabled', 'dark-theme-toggle');
+
 let isClockEnabled = clockSettingHandler.load();
 let isHomeworkEnabled = homeworkSettingHandler.load();
 let isAlwaysOnTop = alwaysOnTopSettingHandler.load(); // 添加置顶状态变量
+let isDarkThemeEnabled = darkThemeSettingHandler.load(); // 添加暗色主题状态变量
 
 const handleClockToggle = (isEnabled) => {
   isClockEnabled = isEnabled;
@@ -328,6 +334,17 @@ const handleAlwaysOnTopToggle = (isEnabled) => {
   }
 };
 
+// 暗色主题切换处理函数
+const handleDarkThemeToggle = (isEnabled) => {
+  isDarkThemeEnabled = isEnabled;
+  darkThemeSettingHandler.handleToggle(isEnabled, mainWindow);
+  
+  // 通知主窗口更新主题
+  if (mainWindow) {
+    mainWindow.webContents.send('dark-theme-toggle', isEnabled);
+  }
+};
+
 // 为 Tray 对象保存一个全局引用以避免被垃圾回收
 let tray;
 const icon = nativeImage.createFromPath(iconPath);
@@ -337,6 +354,7 @@ app.whenReady().then(() => {
   isClockEnabled = clockSettingHandler.load();
   isHomeworkEnabled = homeworkSettingHandler.load();
   isAlwaysOnTop = alwaysOnTopSettingHandler.load(); // 加载置顶设置
+  isDarkThemeEnabled = darkThemeSettingHandler.load(); // 加载暗色主题设置
 
   // 如果是首次运行，显示欢迎页；否则直接创建主窗口
   const appConfig = loadConfig();
@@ -421,6 +439,7 @@ app.whenReady().then(() => {
         clockEnabled: isClockEnabled,
         homeworkEnabled: isHomeworkEnabled,
         alwaysOnTop: isAlwaysOnTop, // 添加置顶状态
+        darkThemeEnabled: isDarkThemeEnabled, // 添加暗色主题状态
         launchpadApps: getLaunchpadApps()
       });
     }
@@ -439,6 +458,11 @@ app.whenReady().then(() => {
   // 监听置顶开关变化
   ipcMain.on('toggle-always-on-top', (event, isEnabled) => {
     handleAlwaysOnTopToggle(isEnabled);
+  });
+  
+  // 监听暗色主题开关变化
+  ipcMain.on('toggle-dark-theme', (event, isEnabled) => {
+    handleDarkThemeToggle(isEnabled);
   });
   
   // 监听添加启动台应用
