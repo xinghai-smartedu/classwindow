@@ -16,6 +16,10 @@
 
 ![主页面](./readme/main.png)
 
+## 联系我们
+
+QQ群：925490458
+
 ## 技术栈
 
 - [Electron](https://www.electronjs.org/)
