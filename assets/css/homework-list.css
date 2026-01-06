@@ -199,16 +199,54 @@ filter-select, .filter-controls fluent-select {
     letter-spacing: 0.5px;
 }
 
-.subject-tag.chinese { background-color: #4CAF50; }
-.subject-tag.math { background-color: #2196F3; }
-.subject-tag.english { background-color: #FF9800; }
-.subject-tag.physics { background-color: #9C27B0; }
-.subject-tag.chemistry { background-color: #FF5722; }
-.subject-tag.biology { background-color: #009688; }
-.subject-tag.history { background-color: #795548; }
-.subject-tag.geography { background-color: #3F51B5; }
-.subject-tag.politics { background-color: #9E9E9E; }
-.subject-tag.other { background-color: #607D8B; }
+.subject-tag.chinese {
+    background-color: #E74C3C; /* 深红色 - 语文课本的红色 */
+    color: white;
+}
+
+.subject-tag.math {
+    background-color: #3498DB; /* 深蓝色 - 数学课本的蓝色 */
+    color: white;
+}
+
+.subject-tag.english {
+    background-color: #F39C12;
+    color: white;
+}
+
+.subject-tag.physics {
+    background-color: #2980B9;
+    color: white;
+}
+
+.subject-tag.chemistry {
+    background-color: #9B59B6;
+    color: white;
+}
+
+.subject-tag.biology {
+    background-color: #27AE60;
+    color: white;
+}
+
+.subject-tag.history {
+    background-color: #E67E22;
+    color: white;
+}
+
+.subject-tag.geography {
+    background-color: #27AE60;
+    color: white;
+}
+
+.subject-tag.politics {
+    background-color: #1ABC9C;
+    color: white;
+}
+
+.subject-tag.other {
+    background-color: #95A5A6;
+}
 
 /* Fluent UI 组件定制 */
 fluent-design-system-provider {

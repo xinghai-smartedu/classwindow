@@ -18,7 +18,6 @@
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     cursor: default;
-    user-select: none;
 }
 
 .title {
@@ -81,11 +80,18 @@ h1 {
 }
 
 .app-logo {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .info-card {
     margin: 20px 0;
+}
+
+.logo-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+    background-image: url("../image/banner.png");
+    background-size: cover;
 }
