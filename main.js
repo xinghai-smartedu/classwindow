@@ -22,7 +22,7 @@ if (app.isPackaged) {
   // 在打包应用中，将配置文件存储在可执行文件的同级目录
   const appDir = path.dirname(app.getPath('exe'));
   const CONFIG_DIR = path.join(appDir, 'data');
-  CONFIG_PATH = path.join(CONFIG_DIR, 'data/config.json');
+  CONFIG_PATH = path.join(CONFIG_DIR, 'config.json');
 } else {
   iconPath = path.join(__dirname, "assets/logo.png");
   CONFIG_PATH = path.join(__dirname, 'data/config.json');
