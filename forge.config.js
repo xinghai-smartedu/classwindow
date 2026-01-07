@@ -1,7 +1,8 @@
 module.exports = {
   packagerConfig: {
     icon: "./assets/logo",
-    executableName: "classwindow"
+    executableName: "classwindow",
+    asar: true
   },
   makers: [
     {
