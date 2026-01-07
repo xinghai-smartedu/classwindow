@@ -1,6 +1,7 @@
 name: Build
 on:
-  workflow_dispatch:
+  push:
+    branches: [ main ]
 jobs:
  build:
    runs-on: ${{ matrix.os }}
@@ -19,12 +20,20 @@ jobs:
        run: npm install -g yarn
      - name: Install Dependencies
        run: yarn
+     - name: Delete Unnecessary Files on Windows
+       if: matrix.os == 'windows-latest'
+       run: Remove-Item -Recurse -Force README.md && Remove-Item -Recurse -Force .git && Remove-Item -Recurse -Force .github && Remove-Item -Recurse -Force .gitignore && Remove-Item -Recurse -Force .gitattributes && Remove-Item -Recurse -Force .vscode && Remove-Item -Recurse -Force .idea && Remove-Item -Recurse -Force installer
+       shell: pwsh
+     - name: Delete Unnecessary Files on Unix
+       if: matrix.os != 'windows-latest'
+       run: rm -rf README.md && rm -rf .git && rm -rf .github && rm -rf .gitignore && rm -rf .gitattributes && rm -rf .vscode && rm -rf .idea && rm -rf installer
+       shell: bash
      - name: Build with electron-forge
        run: "yarn make"
-     - name: Upload a Build Artifact
+     - name: Upload Build Artifacts
        uses: actions/upload-artifact@v6.0.0
        with:
-         name: classwindows-${{ matrix.os }}  # 为每个平台使用不同的名称
+         name: classwindows-${{ matrix.os }}
          path: |
            ./out/**
            !./out/make/**
