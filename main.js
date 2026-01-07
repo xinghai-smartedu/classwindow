@@ -15,13 +15,18 @@ let iconPath;
 
 let resourcesRoot = path.resolve(app.getAppPath());
 
+let CONFIG_PATH = path.join(__dirname, 'data/config.json');
+
 if (app.isPackaged) {
   iconPath = path.join(resourcesRoot, "assets/logo.png");
+  // 在打包应用中，将配置文件存储在可执行文件的同级目录
+  const appDir = path.dirname(app.getPath('exe'));
+  const CONFIG_DIR = path.join(appDir, 'data');
+  CONFIG_PATH = path.join(CONFIG_DIR, 'data/config.json');
 } else {
   iconPath = path.join(__dirname, "assets/logo.png");
+  CONFIG_PATH = path.join(__dirname, 'data/config.json');
 }
-
-const CONFIG_PATH = path.join(__dirname, 'data/config.json');
 
 // 确保配置目录存在
 const ensureConfigDir = () => {
