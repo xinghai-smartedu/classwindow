@@ -22,8 +22,16 @@ jobs:
        run: yarn
      - name: Delete Unnecessary Files on Windows
        if: matrix.os == 'windows-latest'
-       run: Remove-Item -Recurse -Force README.md && Remove-Item -Recurse -Force .git && Remove-Item -Recurse -Force .github && Remove-Item -Recurse -Force .gitignore && Remove-Item -Recurse -Force .gitattributes && Remove-Item -Recurse -Force .vscode && Remove-Item -Recurse -Force .idea && Remove-Item -Recurse -Force installer
-       shell: pwsh
+       run: |
+         del /f /q README.md
+         del /f /q .git
+         del /f /q .github
+         del /f /q .gitignore
+         del /f /q .gitattributes
+         del /f /q .vscode
+         del /f /q .idea
+         del /f /q installer
+       shell: cmd
      - name: Delete Unnecessary Files on Unix
        if: matrix.os != 'windows-latest'
        run: rm -rf README.md && rm -rf .git && rm -rf .github && rm -rf .gitignore && rm -rf .gitattributes && rm -rf .vscode && rm -rf .idea && rm -rf installer
