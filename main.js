@@ -222,7 +222,6 @@ const createSettingsWindow = () => {
     width: 700,
     height: 600,
     resizable: true,
-    transparent: true,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
