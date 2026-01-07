@@ -436,6 +436,13 @@ app.whenReady().then(() => {
 
   tray.setContextMenu(contextMenu);
 
+  ipcMain.on('set-ignore-mouse-events', (event, { ignore, forward }) => {
+      const win = BrowserWindow.fromWebContents(event.sender);
+      if (win) {
+          win.setIgnoreMouseEvents(ignore, forward ? { forward: true } : undefined);
+      }
+  });
+
   ipcMain.on('open-settings-window', () => {
     createSettingsWindow();
   });

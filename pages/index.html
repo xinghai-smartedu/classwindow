@@ -46,6 +46,26 @@
     </div>
 </body>
 <script>
+    // 导入 IPC 通信
+    const { ipcRenderer } = require('electron');
+
+    // 防止click事件在空白区域时被拦截
+    ['timeCard', 'homeworkCard', 'launchpadCard'].forEach(id => {
+        const card = document.getElementById(id);
+        if (card) {
+            card.addEventListener('mouseenter', () => 
+                ipcRenderer.send('set-ignore-mouse-events', { ignore: false })
+            );
+            
+            card.addEventListener('mouseleave', () => 
+                ipcRenderer.send('set-ignore-mouse-events', { 
+                    ignore: true,
+                    forward: true
+                })
+            );
+        }
+    });
+
     // 添加时钟显示状态变量
     let isClockVisible = true;
     // 添加作业显示状态变量
@@ -66,7 +86,6 @@
         // 检查是否在 Electron 环境中
         if (typeof require !== 'undefined') {
             try {
-                const { ipcRenderer } = require('electron');
                 ipcRenderer.send('open-homework-list-window');
             } catch (e) {
                 console.log('Not in Electron environment');
