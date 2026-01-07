@@ -7,6 +7,7 @@
 ## 使用
 
 只需三步：下载软件，解压，然后运行！
+**注意：在Linux上使用.deb包安装时，需要在安装完成后执行命令 `sudo chmod 777 /usr/lib/classwindow/*` 以允许 ClassWindow 创建数据文件。**
 
 ## 配置
 
