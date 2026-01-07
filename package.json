@@ -2,7 +2,7 @@
   "name": "classwindow",
   "productName": "ClassWindow",
   "description": "ClassWindow",
-  "version": "1.1.1-rc1",
+  "version": "1.1.1-rc2",
   "main": "main.js",
   "repository": "git@github.com:xinghai-smartedu/classwindow.git",
   "author": "Yeying-Xingchen <yeyingxingchen@yeah.net>",
