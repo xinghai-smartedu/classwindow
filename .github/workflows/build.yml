@@ -28,7 +28,6 @@ jobs:
          rmdir /S /Q .github
          del /f /q .gitignore
          del /f /q .gitattributes
-         del /f /q forge.config.js
          rmdir /S /Q .vscode
          rmdir /S /Q readme
          rmdir /S /Q installer
@@ -36,7 +35,7 @@ jobs:
        shell: cmd
      - name: Delete Unnecessary Files on Unix
        if: matrix.os != 'windows-latest'
-       run: rm -rf README.md && rm -rf .git && rm -rf .github && rm -rf .gitignore && rm -rf .gitattributes && rm -rf .vscode && rm -rf readme && rm -rf installer && rm -rf changelog && rm -rf forge.config.js
+       run: rm -rf README.md && rm -rf .git && rm -rf .github && rm -rf .gitignore && rm -rf .gitattributes && rm -rf .vscode && rm -rf readme && rm -rf installer && rm -rf changelog
        shell: bash
      - name: Build with electron-forge
        run: "yarn make"
