@@ -257,6 +257,10 @@ const createAboutWindow = () => {
 
   aboutWindow.loadFile('pages/about.html');
 
+  // 窗口关闭时清理引用
+  aboutWindow.on('closed', () => {
+    aboutWindow = null;
+  });
 };
 // 欢迎页面窗口
 let welcomeWindow;
