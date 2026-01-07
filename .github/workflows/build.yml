@@ -39,13 +39,20 @@ jobs:
        shell: bash
      - name: Build with electron-forge
        run: "yarn make"
-     - name: Upload Build Artifacts
+     - name: Upload Build Artifacts (Windows)
+       if: matrix.os == 'windows-latest'
        uses: actions/upload-artifact@v6.0.0
        with:
          name: classwindows-${{ matrix.os }}
          path: |
            ./out/**
            !./out/make/**
+     - name: Upload Build Artifacts (Unix)
+       if: matrix.os != 'windows-latest'
+       uses: actions/upload-artifact@v6.0.0
+       with:
+         name: classwindows-${{ matrix.os }}
+         path: ./out/make/**
      - name: Upload ASAR Artifacts
        if: matrix.os == 'ubuntu-latest'
        uses: actions/upload-artifact@v6.0.0
